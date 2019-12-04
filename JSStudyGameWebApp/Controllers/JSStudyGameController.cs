@@ -103,6 +103,45 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(playerAddInfoVM);
         }
 
+        [HttpGet("score")]
+        public IActionResult GetPlayerScore(string login, string password)
+        {
+            PlayerScoreVM scoreVM = new PlayerScoreVM()
+            {
+                IdPlayerScore = 0,
+                CorrectAnswers = 0,
+                IncorrectAnswers = 0,
+                SkippedAnswers = 0,
+                TotalScore = 0,
+                TimeGameInSeconds = 0,
+                ProgressInGame = 0,
+                CurrentQuestionNoAnswer = 0,
+                AnswersRight = null,
+                AnswersWrong = null
+            };
+
+            var playerBasic = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (playerBasic == null)
+                return Ok(scoreVM);
+
+            var score = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == playerBasic.Id);
+            if (score == null)
+                return Ok(scoreVM);
+
+            scoreVM.IdPlayerScore = score.IdPlayerScore;
+            scoreVM.CorrectAnswers = score.CorrectAnswers;
+            scoreVM.IncorrectAnswers = score.IncorrectAnswers;
+            scoreVM.SkippedAnswers = score.SkippedAnswers;
+            scoreVM.TotalScore = score.TotalScore;
+            scoreVM.TimeGameInSeconds = score.TimeGameInSeconds;
+            scoreVM.ProgressInGame = score.ProgressInGame;
+            scoreVM.CurrentQuestionNoAnswer = score.CurrentQuestionNoAnswer;
+            scoreVM.AnswersRight = score.AnswersRight;
+            scoreVM.AnswersWrong = score.AnswersWrong;
+
+            return Ok(scoreVM);
+        }
+
         [HttpPost("player")]
         public IActionResult CreatePlayer([FromBody]PlayerVM model)
         {
@@ -141,6 +180,8 @@ namespace JSStudyGameWebApp.Controllers
 
                 _context.Players.Add(playerToDB);
                 _context.SaveChanges();
+                
+                EmailWorker.SendEmail(model, "Account was successfully registered!");
 
             }
             catch (Exception) { return Ok(0); }
@@ -181,6 +222,37 @@ namespace JSStudyGameWebApp.Controllers
 
             return Ok(player.IdPlayerAdditionalInfo);
         }
+
+        [HttpPost("score")]
+        public IActionResult CreatePlayerScore([FromBody]PlayerScoreVM model)
+        {
+            if (model == null)
+                return Ok(0);
+
+            PlayerScore player;
+            try
+            {
+                player = new PlayerScore()
+                {
+                    IdPlayerScore = model.IdPlayerScore,
+                    CorrectAnswers = model.CorrectAnswers,
+                    IncorrectAnswers = model.IncorrectAnswers,
+                    SkippedAnswers = model.SkippedAnswers,
+                    TotalScore = model.TotalScore,
+                    TimeGameInSeconds = model.TimeGameInSeconds,
+                    ProgressInGame = model.ProgressInGame,
+                    CurrentQuestionNoAnswer = model.CurrentQuestionNoAnswer,
+                    AnswersRight = model.AnswersRight,
+                    AnswersWrong = model.AnswersWrong
+                };
+                _context.Scores.Add(player);
+                _context.SaveChanges();
+            }
+            catch (Exception) { return Ok(0); }
+
+            return Ok(player.IdPlayerScore);
+        }
+
         // change person info
         [HttpPut("player")]
         public IActionResult ChangePlayer([FromBody]PlayerVM model)
@@ -223,6 +295,8 @@ namespace JSStudyGameWebApp.Controllers
                 player.IsAdmin = model.IsAdmin;
                 player.Password = model.Password;
                 _context.SaveChanges();
+                
+                EmailWorker.SendEmail(model, "Account was successfully changed!");
             }
             catch (Exception) { return Ok(0); }
             return Ok(player.Id);
@@ -270,6 +344,116 @@ namespace JSStudyGameWebApp.Controllers
 
                 return Ok(player.IdPlayerAdditionalInfo);
             }
+        }
+
+        [HttpPut("score")]
+        public IActionResult ChangePlayerScore([FromBody]PlayerScoreVM model)
+        {
+            if (model == null || model.IdPlayerScore <= 0)
+                return Ok(0);
+            PlayerScore player = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == model.IdPlayerScore);
+            if (player == null)
+                return CreatePlayerScore(model);
+            else
+            {
+                try
+                {
+                    player.IdPlayerScore = model.IdPlayerScore;
+                    player.CorrectAnswers = model.CorrectAnswers;
+                    player.IncorrectAnswers = model.IncorrectAnswers;
+                    player.SkippedAnswers = model.SkippedAnswers;
+                    player.TotalScore = model.TotalScore;
+                    player.TimeGameInSeconds = model.TimeGameInSeconds;
+                    player.ProgressInGame = model.ProgressInGame;
+                    player.CurrentQuestionNoAnswer = model.CurrentQuestionNoAnswer;
+                    player.AnswersRight = model.AnswersRight;
+                    player.AnswersWrong = model.AnswersWrong;
+                    _context.SaveChanges();
+                }
+                catch (Exception) { return Ok(0); }
+
+                return Ok(player.IdPlayerScore);
+            }
+        }
+
+        [HttpDelete("player")]
+        public IActionResult DeletePlayer(string login, string password)
+        {
+            try
+            {
+                Player player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+                if (player == null)
+                    throw new Exception();
+
+                PlayerScore score = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == player.Id);
+                if (score != null)
+                {
+                    _context.Scores.Remove(score);
+                    _context.SaveChanges();
+                }
+
+                PlayerAdditionalInfo playerAddInfo = _context.PlayersAdditionalInfo.SingleOrDefault(p => p.IdPlayerAdditionalInfo == player.Id);
+                if (playerAddInfo != null)
+                {
+                    _context.PlayersAdditionalInfo.Remove(playerAddInfo);
+                    _context.SaveChanges();
+                }
+
+                _context.Players.Remove(player);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return Ok(false);
+            }
+            return Ok(true);
+        }
+
+        [HttpDelete("playeraddinfo")]
+        public IActionResult DeletePlayerAddInfo(string login, string password)
+        {
+            try
+            {
+                Player player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+                if (player == null)
+                    throw new Exception();
+
+                PlayerAdditionalInfo playerAddInfo = _context.PlayersAdditionalInfo.SingleOrDefault(p => p.IdPlayerAdditionalInfo == player.Id);
+                if(playerAddInfo != null)
+                {
+                    _context.PlayersAdditionalInfo.Remove(playerAddInfo);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                return Ok(false);
+            }
+            return Ok(true);
+        }
+
+        [HttpDelete("score")]
+        public IActionResult DeleteScore(string login, string password)
+        {
+            try
+            {
+                Player player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+                if (player == null)
+                    throw new Exception();
+
+                PlayerScore score = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == player.Id);
+                if (score != null)
+                {
+                    _context.Scores.Remove(score);
+                    _context.SaveChanges();
+                }
+
+            }
+            catch (Exception)
+            {
+                return Ok(false);
+            }
+            return Ok(true);
         }
     }
 }
