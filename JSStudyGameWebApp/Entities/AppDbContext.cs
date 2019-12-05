@@ -12,5 +12,7 @@ namespace JSStudyGameWebApp.Entities
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerAdditionalInfo> PlayersAdditionalInfo { get; set; }
         public DbSet<PlayerScore> Scores { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Section> Sections { get; set; }
     }
 }
