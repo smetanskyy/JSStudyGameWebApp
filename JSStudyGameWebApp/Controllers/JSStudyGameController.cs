@@ -180,7 +180,7 @@ namespace JSStudyGameWebApp.Controllers
 
                 _context.Players.Add(playerToDB);
                 _context.SaveChanges();
-                
+
                 EmailWorker.SendEmail(model, "Account was successfully registered!");
 
             }
@@ -295,7 +295,7 @@ namespace JSStudyGameWebApp.Controllers
                 player.IsAdmin = model.IsAdmin;
                 player.Password = model.Password;
                 _context.SaveChanges();
-                
+
                 EmailWorker.SendEmail(model, "Account was successfully changed!");
             }
             catch (Exception) { return Ok(0); }
@@ -419,7 +419,7 @@ namespace JSStudyGameWebApp.Controllers
                     throw new Exception();
 
                 PlayerAdditionalInfo playerAddInfo = _context.PlayersAdditionalInfo.SingleOrDefault(p => p.IdPlayerAdditionalInfo == player.Id);
-                if(playerAddInfo != null)
+                if (playerAddInfo != null)
                 {
                     _context.PlayersAdditionalInfo.Remove(playerAddInfo);
                     _context.SaveChanges();
@@ -456,57 +456,39 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(true);
         }
 
-        [HttpGet("tests")]
-        public IActionResult GetTests(string login, string password, string page, string sectionId)
+        [HttpGet("test")]
+        public IActionResult GetTest(string login, string password, string id)
         {
             var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (player == null)
                 return Ok(null);
 
             var query = _context.Tests.AsQueryable();
-            if(sectionId != null)
+            int idOfTest = 1;
+            if (id != null)
             {
-                int idSection;
+
                 try
                 {
-                    idSection = int.Parse(sectionId);
+                    idOfTest = int.Parse(id);
                 }
-                catch (Exception) { idSection = 1; }
-                query.Where(t => t.IdSection == idSection);
+                catch (Exception) { idOfTest = 1; }
             }
-            
-            int numberOfObjectsPerPage = 5;
-            int activePage;
-            if (page == null)
-                activePage = 1;
-            else
-            {
-                try
-                {
-                    activePage = int.Parse(page);
-                }
-                catch (Exception) { activePage = 1; }
-                
-            }
-            
-            query = query
-                    .OrderBy(c => c.Id)
-                    .Skip(numberOfObjectsPerPage * (activePage - 1))
-                    .Take(numberOfObjectsPerPage);
 
-            var tests = query.Select(c => new TestVM
+            var test = query.SingleOrDefault(t => t.Id == idOfTest);
+            TestVM testVM = new TestVM
             {
-                Id = c.Id,
-                Question = c.Question,
-                AnswerA = c.AnswerA,
-                AnswerB = c.AnswerB,
-                AnswerC = c.AnswerC,
-                CorrectAnswer = c.CorrectAnswer,
-                IdSection = c.IdSection,
-                Reference = c.Reference
-            }).ToList();
+                Id = test.Id,
+                Question = test.Question,
+                AnswerA = test.AnswerA,
+                AnswerB = test.AnswerB,
+                AnswerC = test.AnswerC,
+                CorrectAnswer = test.CorrectAnswer,
+                IdSection = test.IdSection,
+                Reference = test.Reference
+            };
 
-            return Ok(tests);
+            return Ok(testVM);
         }
 
         [HttpGet("sections")]
@@ -526,6 +508,18 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(sections);
         }
 
+        [HttpGet("amountoftests")]
+        public IActionResult GetAmountOfTest(string login, string password)
+        {
+            var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (player == null)
+                return Ok(0);
+
+            var query = _context.Tests.AsQueryable();
+
+            return Ok(query.Count());
+        }
+
         #region AdminSection
         [HttpGet("players")]
         public IActionResult GetPlayers(string login, string password, string page)
@@ -533,11 +527,11 @@ namespace JSStudyGameWebApp.Controllers
             var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (player == null)
                 return Ok(null);
-            if(player.IsAdmin == false)
+            if (player.IsAdmin == false)
                 return Ok(null);
 
             var query = _context.Players.AsQueryable();
-            
+
             int numberOfObjectsPerPage = 5;
             int activePage;
             if (page == null)
