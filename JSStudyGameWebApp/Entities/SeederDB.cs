@@ -139,11 +139,10 @@ namespace JSStudyGameWebApp.Entities
                 Id = 1,
                 IdSection = 1,
                 Question = "Когда JavaScript создавался, у него было другое имя. Какое?",
-                AnswerB = "\"LiveScript\"",
                 CorrectAnswer = "\"LiveScript\"",
                 AnswerA = "\"Live\"",
+                AnswerB = "\"Java\"",
                 AnswerC = "\"Script\"",
-                AnswerD = "\"Java\"",
                 Reference = "https://learn.javascript.ru/intro"
             });
             tests.Add(new Test
@@ -153,9 +152,8 @@ namespace JSStudyGameWebApp.Entities
                 Question = "JavaScript и Java это одно и тоже?",
                 CorrectAnswer = "Нет",
                 AnswerA = "Да",
-                AnswerB = "Нет",
+                AnswerB = "Пойду в солдаты",
                 AnswerC = "Мама где море",
-                AnswerD = "Пойду в солдаты",
                 Reference = "https://learn.javascript.ru/intro"
             });
             tests.Add(new Test
@@ -165,9 +163,8 @@ namespace JSStudyGameWebApp.Entities
                 Question = "Какое полное название JavaScript?",
                 CorrectAnswer = "ECMAScript",
                 AnswerA = "SomeScript",
-                AnswerB = "ECMAScript",
+                AnswerB = "Strip",
                 AnswerC = "JS the best",
-                AnswerD = "Strip",
                 Reference = "https://learn.javascript.ru/intro"
             });
             tests.Add(new Test
@@ -177,8 +174,7 @@ namespace JSStudyGameWebApp.Entities
                 Question = "Назовите спецификацию которая содержит самую глубокую, детальную и формализованную информацию о JavaScript?",
                 AnswerA = "Спецификация для чайников",
                 AnswerB = "Помню на английском было",
-                AnswerC = "Спецификация ECMA-262",
-                AnswerD = "Спецификация CI4",
+                AnswerC = "Спецификация CI4",
                 CorrectAnswer = "Спецификация ECMA-262",
                 Reference = "https://learn.javascript.ru/manuals-specifications"
             });
@@ -187,10 +183,9 @@ namespace JSStudyGameWebApp.Entities
                 Id = 5,
                 IdSection = 1,
                 Question = "Назовите популярные редакторы кода?",
-                AnswerA = "Visual Studio Code; Atom; Sublime Text; Notepad++; Vim и Emacs",
+                AnswerA = "Ответ где то рядом",
                 AnswerB = "Не будем ссориться",
                 AnswerC = "Нужна спросить у Брендана Эйха",
-                AnswerD = "Ответ где то рядом",
                 CorrectAnswer = "Visual Studio Code; Atom; Sublime Text; Notepad++; Vim и Emacs",
                 Reference = "https://learn.javascript.ru/code-editors"
             });
@@ -199,10 +194,9 @@ namespace JSStudyGameWebApp.Entities
                 Id = 6,
                 IdSection = 1,
                 Question = "В большинстве браузеров, работающих под Windows, инструменты разработчика можно открыть, нажав: ",
-                AnswerA = "F12",
+                AnswerA = "F1",
                 AnswerB = "Кнопку дверного звонка",
                 AnswerC = "Esc",
-                AnswerD = "F1",
                 CorrectAnswer = "F12",
                 Reference = "https://learn.javascript.ru/devtools"
             });
@@ -214,7 +208,6 @@ namespace JSStudyGameWebApp.Entities
                 AnswerA = "cout( \"Я JavaScript!\" );",
                 AnswerB = "WriteLine( \"Я JavaScript!\" );",
                 AnswerC = "MessageBox.Show( \"Я JavaScript!\" );",
-                AnswerD = "alert( \"Я JavaScript!\" );",
                 CorrectAnswer = "alert( \"Я JavaScript!\" );",
                 Reference = "https://learn.javascript.ru/hello-world"
             });
@@ -224,10 +217,9 @@ namespace JSStudyGameWebApp.Entities
                 IdSection = 2,
                 Question = "Для добавления кода JavaScript на страницу используется тег:",
                 CorrectAnswer = "<script>",
-                AnswerA = "<crisps>",
+                AnswerA = "<javascript>",
                 AnswerB = "<javacrisps>",
                 AnswerC = "<script>",
-                AnswerD = "<javascript>",
                 Reference = "https://learn.javascript.ru/hello-world"
             });
             tests.Add(new Test
@@ -236,9 +228,8 @@ namespace JSStudyGameWebApp.Entities
                 IdSection = 2,
                 Question = "Скрипт во внешнем файле можно вставить с помощью:",
                 AnswerA = "<crisps src=\"path/to/script.js\"></script>",
-                AnswerB = "<script src=\"path/to/script.js\"></script>",
+                AnswerB = "<javascript src=\"path/to/script.js\"></script>",
                 AnswerC = "<script url=\"path/to/script.js\"></script>",
-                AnswerD = "<javascript src=\"path/to/script.js\"></script>",
                 CorrectAnswer = "<script src=\"path/to/script.js\"></script>",
                 Reference = "https://learn.javascript.ru/hello-world"
             });
@@ -249,8 +240,7 @@ namespace JSStudyGameWebApp.Entities
                 Question = "Какой правильный способ для комментарии в JavaScript?",
                 AnswerA = "<!-- Это комментарий. -->",
                 AnswerB = "// Это комментарий.",
-                AnswerC = "Ответы B и D",
-                AnswerD = "/* Это комментарий. */",
+                AnswerC = "/* Это комментарий. */",
                 CorrectAnswer = "Ответы B и D",
                 Reference = "https://learn.javascript.ru/structure"
             });
@@ -259,10 +249,9 @@ namespace JSStudyGameWebApp.Entities
                 Id = 11,
                 IdSection = 2,
                 Question = "Мы можем объявить переменные для хранения данных с помощью ключевых слов:",
-                AnswerA = "var, let или const",
+                AnswerA = "float, double, decimal",
                 AnswerB = "int, char, bool",
                 AnswerC = "short, long",
-                AnswerD = "float, double, decimal",
                 CorrectAnswer = "var, let или const",
                 Reference = "https://learn.javascript.ru/variables"
             });
@@ -272,9 +261,8 @@ namespace JSStudyGameWebApp.Entities
                 IdSection = 2,
                 Question = "В JavaScript есть ограничения, касающиеся имён переменных. Назовите их:",
                 AnswerA = "Имя переменной должно содержать только буквы, цифры или символы $ и _",
-                AnswerB = "Ответы A и D",
+                AnswerB = "Первый символ не должен быть цифрой",
                 AnswerC = "Имя переменной должно содержать только буквы, цифры или символы",
-                AnswerD = "Первый символ не должен быть цифрой",
                 CorrectAnswer = "Ответы A и D",
                 Reference = "https://learn.javascript.ru/variables"
             });
@@ -283,10 +271,9 @@ namespace JSStudyGameWebApp.Entities
                 Id = 13,
                 IdSection = 2,
                 Question = "Назовите основные типы в JavaScript",
-                AnswerA = "number, string, boolean, null, undefined, object, symbol",
+                AnswerA = "number, string, boolean, null, undefined",
                 AnswerB = "number, string, boolean",
                 AnswerC = "number, string, boolean, null",
-                AnswerD = "number, string, boolean, null, undefined",
                 CorrectAnswer = "number, string, boolean, null, undefined, object, symbol",
                 Reference = "https://learn.javascript.ru/types"
             });
@@ -296,9 +283,8 @@ namespace JSStudyGameWebApp.Entities
                 IdSection = 2,
                 Question = "Что выведет этот скрипт?\n   let name = \"Ilya\";\n   alert( `hello ${\"name\"}` );",
                 AnswerA = "hello 1",
-                AnswerB = "hello name",
+                AnswerB = "hello",
                 AnswerC = "hello Ilya",
-                AnswerD = "hello",
                 CorrectAnswer = "hello name",
                 Reference = "https://learn.javascript.ru/types"
             });
@@ -309,8 +295,7 @@ namespace JSStudyGameWebApp.Entities
                 Question = "Оператор typeof возвращает тип аргумента. Результатом вызова typeof null будет:",
                 AnswerA = "undefined",
                 AnswerB = "symbol",
-                AnswerC = "object",
-                AnswerD = "function",
+                AnswerC = "function",
                 CorrectAnswer = "object",
                 Reference = "https://learn.javascript.ru/types"
             });
@@ -318,241 +303,221 @@ namespace JSStudyGameWebApp.Entities
             {
                 Id = 16,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( `результат: ${1 + 2}` );",
+                AnswerA = "результат: ${1 + 2}",
+                AnswerB = "результат:",
+                AnswerC = "NaN",
+                CorrectAnswer = "результат: 3",
+                Reference = "https://learn.javascript.ru/types"
             });
             tests.Add(new Test
             {
                 Id = 17,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( \"результат: ${ 1 + 2}\" );",
+                AnswerA = "результат: 3",
+                AnswerB = "NaN",
+                AnswerC = "результат:",
+                CorrectAnswer = "результат: ${1 + 2}",
+                Reference = "https://learn.javascript.ru/types"
             });
             tests.Add(new Test
             {
                 Id = 18,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт?\n   let x;\n   alert( alert(x); );",
+                AnswerA = "null",
+                AnswerB = "Что происходит?!",
+                AnswerC = "0",
+                CorrectAnswer = "undefined",
+                Reference = "https://learn.javascript.ru/types"
             });
             tests.Add(new Test
             {
                 Id = 19,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( 1 / 0 );",
+                AnswerA = "NaN",
+                AnswerB = "бесконечность",
+                AnswerC = "Но-но! На ноль делить нельзя!",
+                CorrectAnswer = "Infinity",
+                Reference = "https://learn.javascript.ru/types"
             });
             tests.Add(new Test
             {
                 Id = 20,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( \"не число\" / 2 );",
+                AnswerA = "number",
+                AnswerB = "true",
+                AnswerC = "Говорила мне мама на юридической поступать",
+                CorrectAnswer = "NaN",
+                Reference = "https://learn.javascript.ru/types"
             });
             tests.Add(new Test
             {
                 Id = 21,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   let str = \"123\";\n   alert(typeof str);\n   let num = Number(str);\n   alert(typeof num);",
+                AnswerA = "undefined\nnumber",
+                AnswerB = "number\nstring",
+                AnswerC = "string\nstring",
+                CorrectAnswer = "string\nnumber",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 22,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Number(\"   123   \") );",
+                AnswerA = "true",
+                AnswerB = "NaN",
+                AnswerC = "1",
+                CorrectAnswer = "123",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 23,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Number(\"123z\") );",
+                AnswerA = "123",
+                AnswerB = "z",
+                AnswerC = "123z",
+                CorrectAnswer = "NaN",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 24,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Number(true) );",
+                AnswerA = "true",
+                AnswerB = "false",
+                AnswerC = "0",
+                CorrectAnswer = "1",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 25,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( 1 + '2' );",
+                AnswerA = "3",
+                AnswerB = "1",
+                AnswerC = "1 + 2",
+                CorrectAnswer = "12",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 26,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Логическое преобразование Boolean(value). 0, пустой строки, null, undefined и NaN, становятся ... ",
+                AnswerA = "true",
+                AnswerB = "NaN",
+                AnswerC = "И не надо так на меня молчать!",
+                CorrectAnswer = "false",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 27,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Boolean(\"Привет!\") );",
+                AnswerA = "false",
+                AnswerB = "null",
+                AnswerC = "NaN",
+                CorrectAnswer = "true",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 28,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Boolean(\"0\") );",
+                AnswerA = "0",
+                AnswerB = "string",
+                AnswerC = "false",
+                CorrectAnswer = "true",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 29,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Что выведет этот скрипт ?\n   alert( Boolean(\" \") );",
+                AnswerA = "Мда ...",
+                AnswerB = "false",
+                AnswerC = "script",
+                CorrectAnswer = "true",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 30,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Какой результат будет у выражение ниже?\n   \"\" + 1 + 0 = ?",
+                AnswerA = "10 like number",
+                AnswerB = "null",
+                AnswerC = "NaN",
+                CorrectAnswer = "\"10\" like string",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 31,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Какой результат будет у выражение ниже?\n   \"2\" * \"3\" = ?",
+                AnswerA = "это что математика",
+                AnswerB = "23",
+                AnswerC = "6 like string",
+                CorrectAnswer = "6 like number",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 32,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
+                Question = "Какой результат будет у выражение ниже?\n   4 + 5 + \"px\" = ?",
+                AnswerA = "45",
+                AnswerB = "\"45\"",
+                AnswerC = "\"45px\"",
+                CorrectAnswer = "\"9px\"",
                 Reference = ""
             });
             tests.Add(new Test
             {
                 Id = 33,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Какой результат будет у выражение ниже?\n   \"$\" + 4 + 5 = ?",
+                AnswerA = "\"$9\"",
+                AnswerB = "\"$\"",
+                AnswerC = "45",
+                CorrectAnswer = "\"$45\"",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 34,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Какой результат будет у выражение ниже?\n   \"4px\" - 2 = ?",
+                AnswerA = "\"2px\"",
+                AnswerB = "\"4px\"",
+                AnswerC = "\"px\"",
+                CorrectAnswer = "NaN",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
             tests.Add(new Test
             {
                 Id = 35,
                 IdSection = 2,
-                Question = "",
-                AnswerA = "",
-                AnswerB = "",
-                AnswerC = "",
-                AnswerD = "",
-                CorrectAnswer = "",
-                Reference = ""
+                Question = "Какой результат будет у выражение ниже?\n   undefined + 1 = ?",
+                AnswerA = "undefined",
+                AnswerB = "1",
+                AnswerC = "null",
+                CorrectAnswer = "NaN ",
+                Reference = "https://learn.javascript.ru/type-conversions"
             });
 
             foreach (var test in tests)

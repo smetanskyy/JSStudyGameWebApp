@@ -455,5 +455,118 @@ namespace JSStudyGameWebApp.Controllers
             }
             return Ok(true);
         }
+
+        [HttpGet("tests")]
+        public IActionResult GetTests(string login, string password, string page, string sectionId)
+        {
+            var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (player == null)
+                return Ok(null);
+
+            var query = _context.Tests.AsQueryable();
+            if(sectionId != null)
+            {
+                int idSection;
+                try
+                {
+                    idSection = int.Parse(sectionId);
+                }
+                catch (Exception) { idSection = 1; }
+                query.Where(t => t.IdSection == idSection);
+            }
+            
+            int numberOfObjectsPerPage = 5;
+            int activePage;
+            if (page == null)
+                activePage = 1;
+            else
+            {
+                try
+                {
+                    activePage = int.Parse(page);
+                }
+                catch (Exception) { activePage = 1; }
+                
+            }
+            
+            query = query
+                    .OrderBy(c => c.Id)
+                    .Skip(numberOfObjectsPerPage * (activePage - 1))
+                    .Take(numberOfObjectsPerPage);
+
+            var tests = query.Select(c => new TestVM
+            {
+                Id = c.Id,
+                Question = c.Question,
+                AnswerA = c.AnswerA,
+                AnswerB = c.AnswerB,
+                AnswerC = c.AnswerC,
+                CorrectAnswer = c.CorrectAnswer,
+                IdSection = c.IdSection,
+                Reference = c.Reference
+            }).ToList();
+
+            return Ok(tests);
+        }
+
+        [HttpGet("sections")]
+        public IActionResult GetSections(string login, string password)
+        {
+            var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (player == null)
+                return Ok(null);
+
+            var query = _context.Sections.AsQueryable();
+            var sections = query.Select(c => new SectionVM
+            {
+                IdSection = c.IdSection,
+                NameOFSection = c.NameOFSection
+            }).ToList();
+
+            return Ok(sections);
+        }
+
+        #region AdminSection
+        [HttpGet("players")]
+        public IActionResult GetPlayers(string login, string password, string page)
+        {
+            var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (player == null)
+                return Ok(null);
+            if(player.IsAdmin == false)
+                return Ok(null);
+
+            var query = _context.Players.AsQueryable();
+            
+            int numberOfObjectsPerPage = 5;
+            int activePage;
+            if (page == null)
+                activePage = 1;
+            else
+            {
+                try
+                {
+                    activePage = int.Parse(page);
+                }
+                catch (Exception) { activePage = 1; }
+            }
+
+            query = query
+                    .OrderBy(c => c.Id)
+                    .Skip(numberOfObjectsPerPage * (activePage - 1))
+                    .Take(numberOfObjectsPerPage);
+
+            var players = query.Select(p => new PlayerVM
+            {
+                Id = p.Id,
+                Email = p.Email,
+                Password = p.Password,
+                Login = p.Login,
+                IsAdmin = p.IsAdmin
+            }).ToList();
+
+            return Ok(players);
+        }
+        #endregion
     }
 }

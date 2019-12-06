@@ -21,8 +21,6 @@ namespace JSStudyGameWebApp.Entities
         [Required, StringLength(100)]
         public string AnswerC { get; set; }
         [Required, StringLength(100)]
-        public string AnswerD { get; set; }
-        [Required, StringLength(100)]
         public string CorrectAnswer { get; set; }
         [StringLength(150)]
         public string Reference { get; set; }
