@@ -116,7 +116,7 @@ namespace JSStudyGameWebApp.Controllers
                 TimeGameInSeconds = 0,
                 ProgressInGame = 0,
                 CurrentQuestionNoAnswer = 0,
-                AnswersRight = null,
+                AnswersSkipped = null,
                 AnswersWrong = null
             };
 
@@ -136,7 +136,7 @@ namespace JSStudyGameWebApp.Controllers
             scoreVM.TimeGameInSeconds = score.TimeGameInSeconds;
             scoreVM.ProgressInGame = score.ProgressInGame;
             scoreVM.CurrentQuestionNoAnswer = score.CurrentQuestionNoAnswer;
-            scoreVM.AnswersRight = score.AnswersRight;
+            scoreVM.AnswersSkipped = score.AnswersSkipped;
             scoreVM.AnswersWrong = score.AnswersWrong;
 
             return Ok(scoreVM);
@@ -242,7 +242,7 @@ namespace JSStudyGameWebApp.Controllers
                     TimeGameInSeconds = model.TimeGameInSeconds,
                     ProgressInGame = model.ProgressInGame,
                     CurrentQuestionNoAnswer = model.CurrentQuestionNoAnswer,
-                    AnswersRight = model.AnswersRight,
+                    AnswersSkipped = model.AnswersSkipped,
                     AnswersWrong = model.AnswersWrong
                 };
                 _context.Scores.Add(player);
@@ -366,7 +366,7 @@ namespace JSStudyGameWebApp.Controllers
                     player.TimeGameInSeconds = model.TimeGameInSeconds;
                     player.ProgressInGame = model.ProgressInGame;
                     player.CurrentQuestionNoAnswer = model.CurrentQuestionNoAnswer;
-                    player.AnswersRight = model.AnswersRight;
+                    player.AnswersSkipped = model.AnswersSkipped;
                     player.AnswersWrong = model.AnswersWrong;
                     _context.SaveChanges();
                 }
@@ -376,6 +376,7 @@ namespace JSStudyGameWebApp.Controllers
             }
         }
 
+        // delete person info
         [HttpDelete("player")]
         public IActionResult DeletePlayer(string login, string password)
         {
@@ -491,21 +492,31 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(testVM);
         }
 
-        [HttpGet("sections")]
-        public IActionResult GetSections(string login, string password)
+        [HttpGet("section")]
+        public IActionResult GetSections(string login, string password, string id)
         {
             var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (player == null)
                 return Ok(null);
 
-            var query = _context.Sections.AsQueryable();
-            var sections = query.Select(c => new SectionVM
+            int idSection = 1;
+            if (id != null)
             {
-                IdSection = c.IdSection,
-                NameOFSection = c.NameOFSection
-            }).ToList();
+                try
+                {
+                    idSection = int.Parse(id);
+                }
+                catch (Exception) { idSection = 1; }
+            }
+            var section = _context.Sections.SingleOrDefault(s => s.IdSection == idSection);
 
-            return Ok(sections);
+            //var sections = query.Select(c => new SectionVM
+            //{
+            //    IdSection = c.IdSection,
+            //    NameOFSection = c.NameOFSection
+            //}).ToList();
+
+            return Ok(section);
         }
 
         [HttpGet("amountoftests")]

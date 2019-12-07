@@ -15,7 +15,7 @@ namespace JSStudyGameWebApp.ViewModels
         public double TimeGameInSeconds { get; set; }
         public int ProgressInGame { get; set; }
         public int CurrentQuestionNoAnswer { get; set; }
-        public string AnswersRight { get; set; }
+        public string AnswersSkipped { get; set; }
         public string AnswersWrong { get; set; }
     }
 }
