@@ -116,8 +116,8 @@ namespace JSStudyGameWebApp.Controllers
                 TimeGameInSeconds = 0,
                 ProgressInGame = 0,
                 CurrentQuestionNoAnswer = 1,
-                AnswersSkipped = null,
-                AnswersWrong = null
+                AnswersSkipped = "",
+                AnswersWrong = ""
             };
 
             var playerBasic = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);

@@ -150,10 +150,10 @@ namespace JSStudyGameWebApp.Entities
                 Id = 2,
                 IdSection = 1,
                 Question = "JavaScript и Java это одно и тоже?",
-                CorrectAnswer = "Нет",
                 AnswerA = "Да",
                 AnswerB = "Пойду в солдаты",
                 AnswerC = "Мама где море",
+                CorrectAnswer = "Нет",
                 Reference = "https://learn.javascript.ru/intro"
             });
             tests.Add(new Test
@@ -161,10 +161,10 @@ namespace JSStudyGameWebApp.Entities
                 Id = 3,
                 IdSection = 1,
                 Question = "Какое полное название JavaScript?",
-                CorrectAnswer = "ECMAScript",
                 AnswerA = "SomeScript",
                 AnswerB = "Strip",
                 AnswerC = "JS the best",
+                CorrectAnswer = "ECMAScript",
                 Reference = "https://learn.javascript.ru/intro"
             });
             tests.Add(new Test
@@ -216,10 +216,10 @@ namespace JSStudyGameWebApp.Entities
                 Id = 8,
                 IdSection = 2,
                 Question = "Для добавления кода JavaScript на страницу используется тег:",
-                CorrectAnswer = "<script>",
                 AnswerA = "<javascript>",
                 AnswerB = "<javacrisps>",
-                AnswerC = "<script>",
+                AnswerC = "<crisps>",
+                CorrectAnswer = "<script>",
                 Reference = "https://learn.javascript.ru/hello-world"
             });
             tests.Add(new Test
@@ -238,10 +238,10 @@ namespace JSStudyGameWebApp.Entities
                 Id = 10,
                 IdSection = 2,
                 Question = "Какой правильный способ для комментарии в JavaScript?",
-                AnswerA = "<!-- Это комментарий. -->",
-                AnswerB = "// Это комментарий.",
-                AnswerC = "/* Это комментарий. */",
-                CorrectAnswer = "Ответы B и D",
+                AnswerA = "<!-- Это комментарий -->",
+                AnswerB = "/// Это комментарий",
+                AnswerC = "/* Это комментарий",
+                CorrectAnswer = "// Это комментарий или /* Это комментарий. */",
                 Reference = "https://learn.javascript.ru/structure"
             });
             tests.Add(new Test
@@ -259,11 +259,11 @@ namespace JSStudyGameWebApp.Entities
             {
                 Id = 12,
                 IdSection = 2,
-                Question = "В JavaScript есть ограничения, касающиеся имён переменных. Назовите их:",
-                AnswerA = "Имя переменной должно содержать только буквы, цифры или символы $ и _",
-                AnswerB = "Первый символ не должен быть цифрой",
-                AnswerC = "Имя переменной должно содержать только буквы, цифры или символы",
-                CorrectAnswer = "Ответы A и D",
+                Question = "Можно ли использовать знак доллара '$' и подчёркивание '_' в названиях:\n   let $ = 1; (или let _ = 2;)",
+                AnswerA = "Нельзя",
+                AnswerB = "Надо подумать",
+                AnswerC = "Хм ...",
+                CorrectAnswer = "Можно",
                 Reference = "https://learn.javascript.ru/variables"
             });
             tests.Add(new Test
