@@ -142,6 +142,48 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(scoreVM);
         }
 
+        [HttpGet("fullinfo")]
+        public IActionResult GetPlayerFullInfo(string login, string password, string page)
+        {
+            var admin = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (admin == null)
+                return Ok(null);
+            if (admin.IsAdmin == false)
+                return Ok(null);
+
+            int _activePage;
+            int numberOfObjectsPerPage = 5;
+            if (page == null)
+                _activePage = 1;
+            else
+                _activePage = int.Parse(page);
+
+            var query = _context.Players.AsQueryable();
+
+            query = query
+                    .OrderBy(c => c.Id)
+                    .Skip(numberOfObjectsPerPage * (_activePage - 1))
+                    .Take(numberOfObjectsPerPage);
+
+            var getFullInfo = from p in query
+                              join a in _context.PlayersAdditionalInfo on p.Id equals a.IdPlayerAdditionalInfo
+                              select new PlayerFullInfo
+                              {
+                                  Id = p.Id,
+                                  Password = p.Password,
+                                  Email = p.Email,
+                                  Login = p.Login,
+                                  IsAdmin = p.IsAdmin,
+                                  Name = a.Name,
+                                  Surname = a.Surname,
+                                  Photo = a.Photo,
+                                  BirthDate = a.BirthDate,
+                                  Gender = a.Gender == true ? "male" : "female"
+                              };
+
+            return Ok(getFullInfo);
+        }
+
         [HttpPost("player")]
         public IActionResult CreatePlayer([FromBody]PlayerVM model)
         {
@@ -531,47 +573,17 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(query.Count());
         }
 
-        #region AdminSection
-        [HttpGet("players")]
-        public IActionResult GetPlayers(string login, string password, string page)
+        [HttpGet("amountofplayers")]
+        public IActionResult GetAmountOfPlayers(string login, string password)
         {
             var player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (player == null)
-                return Ok(null);
-            if (player.IsAdmin == false)
-                return Ok(null);
+                return Ok(0);
 
             var query = _context.Players.AsQueryable();
 
-            int numberOfObjectsPerPage = 5;
-            int activePage;
-            if (page == null)
-                activePage = 1;
-            else
-            {
-                try
-                {
-                    activePage = int.Parse(page);
-                }
-                catch (Exception) { activePage = 1; }
-            }
-
-            query = query
-                    .OrderBy(c => c.Id)
-                    .Skip(numberOfObjectsPerPage * (activePage - 1))
-                    .Take(numberOfObjectsPerPage);
-
-            var players = query.Select(p => new PlayerVM
-            {
-                Id = p.Id,
-                Email = p.Email,
-                Password = p.Password,
-                Login = p.Login,
-                IsAdmin = p.IsAdmin
-            }).ToList();
-
-            return Ok(players);
+            return Ok(query.Count());
         }
-        #endregion
+        
     }
 }
