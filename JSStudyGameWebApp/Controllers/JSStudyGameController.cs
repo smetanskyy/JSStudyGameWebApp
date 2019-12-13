@@ -126,7 +126,10 @@ namespace JSStudyGameWebApp.Controllers
 
             var score = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == playerBasic.Id);
             if (score == null)
+            {
+                scoreVM.IdPlayerScore = playerBasic.Id;
                 return Ok(scoreVM);
+            }
 
             scoreVM.IdPlayerScore = score.IdPlayerScore;
             scoreVM.CorrectAnswers = score.CorrectAnswers;
@@ -143,7 +146,7 @@ namespace JSStudyGameWebApp.Controllers
         }
 
         [HttpGet("fullinfo")]
-        public IActionResult GetPlayerFullInfo(string login, string password, string page)
+        public IActionResult GetPlayersFullInfo(string login, string password, string page)
         {
             var admin = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (admin == null)
@@ -183,6 +186,49 @@ namespace JSStudyGameWebApp.Controllers
 
             return Ok(getFullInfo);
         }
+
+        [HttpGet("search")]
+        public IActionResult GetPlayerFullInfo(string login, string password, string page, string slogin, string semail, string sname, string ssurname)
+        {
+            var admin = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
+            if (admin == null)
+                return Ok(null);
+            if (admin.IsAdmin == false)
+                return Ok(null);
+
+            int _activePage;
+            int numberOfObjectsPerPage = 5;
+            if (page == null)
+                _activePage = 1;
+            else
+                _activePage = int.Parse(page);
+
+            var query = _context.Players.AsQueryable();
+
+            query = query
+                    .OrderBy(c => c.Id)
+                    .Skip(numberOfObjectsPerPage * (_activePage - 1))
+                    .Take(numberOfObjectsPerPage);
+
+            var getFullInfo = from p in query
+                              join a in _context.PlayersAdditionalInfo on p.Id equals a.IdPlayerAdditionalInfo
+                              select new PlayerFullInfo
+                              {
+                                  Id = p.Id,
+                                  Password = p.Password,
+                                  Email = p.Email,
+                                  Login = p.Login,
+                                  IsAdmin = p.IsAdmin,
+                                  Name = a.Name,
+                                  Surname = a.Surname,
+                                  Photo = a.Photo,
+                                  BirthDate = a.BirthDate,
+                                  Gender = a.Gender == true ? "male" : "female"
+                              };
+
+            return Ok(getFullInfo);
+        }
+
 
         [HttpPost("player")]
         public IActionResult CreatePlayer([FromBody]PlayerVM model)
