@@ -146,11 +146,12 @@ namespace JSStudyGameWebApp.Controllers
         }
 
         [HttpGet("fullinfo")]
-        public IActionResult GetPlayersFullInfo(string login, string password, string page)
+        public IActionResult GetPlayersFullInfo(string login, string password, string page, string sword)
         {
             var admin = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (admin == null)
                 return Ok(null);
+
             if (admin.IsAdmin == false)
                 return Ok(null);
 
@@ -161,15 +162,55 @@ namespace JSStudyGameWebApp.Controllers
             else
                 _activePage = int.Parse(page);
 
-            var query = _context.Players.AsQueryable();
 
-            query = query
-                    .OrderBy(c => c.Id)
-                    .Skip(numberOfObjectsPerPage * (_activePage - 1))
-                    .Take(numberOfObjectsPerPage);
+            var query = _context.Players.AsQueryable();
+            IQueryable<Player> searchInPlayes = null;
+
+            var queryAddInfo = _context.PlayersAdditionalInfo.AsQueryable();
+            IQueryable<PlayerAdditionalInfo> searchAddInfo = null;
+
+            if (sword != null)
+            {
+                searchInPlayes = query.Where(p => p.Login == sword);
+
+                if (searchInPlayes == null || searchInPlayes.Count() == 0)
+                {
+                    searchInPlayes = query.Where(p => p.Email == sword);
+                }
+
+                if (searchInPlayes != null && searchInPlayes.Count() > 0)
+                {
+                    query = searchInPlayes;
+                }
+                else
+                {
+                    searchAddInfo = queryAddInfo.Where(a => a.Name.ToLower() == sword.ToLower());
+                    if (searchAddInfo == null || searchAddInfo.Count() == 0)
+                    {
+                        searchAddInfo = queryAddInfo.Where(a => a.Surname.ToLower() == sword.ToLower());
+                    }
+                    if (searchAddInfo != null && searchAddInfo.Count() > 0)
+                    {
+                        queryAddInfo = searchAddInfo;
+                        queryAddInfo = queryAddInfo
+                            .OrderBy(c => c.IdPlayerAdditionalInfo)
+                            .Skip(numberOfObjectsPerPage * (_activePage - 1))
+                            .Take(numberOfObjectsPerPage);
+                    }
+                }
+                if (searchAddInfo.Count() == 0 && searchAddInfo.Count() == 0)
+                    return Ok(null);
+            }
+            else
+            {
+                query = query
+                        .OrderBy(c => c.Id)
+                        .Skip(numberOfObjectsPerPage * (_activePage - 1))
+                        .Take(numberOfObjectsPerPage);
+            }
 
             var getFullInfo = from p in query
-                              join a in _context.PlayersAdditionalInfo on p.Id equals a.IdPlayerAdditionalInfo
+                              join a in queryAddInfo on p.Id equals a.IdPlayerAdditionalInfo
                               select new PlayerFullInfo
                               {
                                   Id = p.Id,
@@ -187,48 +228,51 @@ namespace JSStudyGameWebApp.Controllers
             return Ok(getFullInfo);
         }
 
-        [HttpGet("search")]
-        public IActionResult GetPlayerFullInfo(string login, string password, string page, string slogin, string semail, string sname, string ssurname)
+        [HttpGet("amountsearch")]
+        public IActionResult GetAmountSearchPlayers(string login, string password, string sword)
         {
             var admin = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
             if (admin == null)
-                return Ok(null);
+                return Ok(0);
+
             if (admin.IsAdmin == false)
-                return Ok(null);
+                return Ok(0);
 
-            int _activePage;
-            int numberOfObjectsPerPage = 5;
-            if (page == null)
-                _activePage = 1;
-            else
-                _activePage = int.Parse(page);
-
+            
             var query = _context.Players.AsQueryable();
+            IQueryable<Player> searchInPlayes = null;
 
-            query = query
-                    .OrderBy(c => c.Id)
-                    .Skip(numberOfObjectsPerPage * (_activePage - 1))
-                    .Take(numberOfObjectsPerPage);
+            var queryAddInfo = _context.PlayersAdditionalInfo.AsQueryable();
+            IQueryable<PlayerAdditionalInfo> searchAddInfo = null;
 
-            var getFullInfo = from p in query
-                              join a in _context.PlayersAdditionalInfo on p.Id equals a.IdPlayerAdditionalInfo
-                              select new PlayerFullInfo
-                              {
-                                  Id = p.Id,
-                                  Password = p.Password,
-                                  Email = p.Email,
-                                  Login = p.Login,
-                                  IsAdmin = p.IsAdmin,
-                                  Name = a.Name,
-                                  Surname = a.Surname,
-                                  Photo = a.Photo,
-                                  BirthDate = a.BirthDate,
-                                  Gender = a.Gender == true ? "male" : "female"
-                              };
+            if (sword != null)
+            {
+                searchInPlayes = query.Where(p => p.Login == sword);
 
-            return Ok(getFullInfo);
+                if (searchInPlayes == null || searchInPlayes.Count() == 0)
+                {
+                    searchInPlayes = query.Where(p => p.Email == sword);
+                }
+
+                if (searchInPlayes != null && searchInPlayes.Count() > 0)
+                {
+                    return Ok(searchInPlayes.Count());
+                }
+                else
+                {
+                    searchAddInfo = queryAddInfo.Where(a => a.Name.ToLower() == sword.ToLower());
+                    if (searchAddInfo == null || searchAddInfo.Count() == 0)
+                    {
+                        searchAddInfo = queryAddInfo.Where(a => a.Surname.ToLower() == sword.ToLower());
+                    }
+                    return Ok(searchAddInfo.Count());
+                }
+            }
+            else
+            {
+                return Ok(0);
+            }
         }
-
 
         [HttpPost("player")]
         public IActionResult CreatePlayer([FromBody]PlayerVM model)
@@ -370,7 +414,6 @@ namespace JSStudyGameWebApp.Controllers
                     //This email is already in use!";
                     mistake += -2;
                 }
-
             }
 
             if (mistake < 0)
@@ -382,6 +425,10 @@ namespace JSStudyGameWebApp.Controllers
                 player.Email = model.Email;
                 player.IsAdmin = model.IsAdmin;
                 player.Password = model.Password;
+
+                if (player.Id == 1)
+                    player.IsAdmin = true;
+
                 _context.SaveChanges();
 
                 EmailWorker.SendEmail(model, "Account was successfully changed!");
@@ -471,7 +518,7 @@ namespace JSStudyGameWebApp.Controllers
             try
             {
                 Player player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
-                if (player == null)
+                if (player == null || player.Id == 1)
                     throw new Exception();
 
                 PlayerScore score = _context.Scores.SingleOrDefault(p => p.IdPlayerScore == player.Id);
@@ -484,6 +531,19 @@ namespace JSStudyGameWebApp.Controllers
                 PlayerAdditionalInfo playerAddInfo = _context.PlayersAdditionalInfo.SingleOrDefault(p => p.IdPlayerAdditionalInfo == player.Id);
                 if (playerAddInfo != null)
                 {
+                    try
+                    {
+                        string fileDestDir = _env.ContentRootPath;
+                        fileDestDir = Path.Combine(fileDestDir, "Photos");
+                        
+                        if (playerAddInfo.Photo != "stepanPhoto.jpg" && System.IO.File.Exists(Path.Combine(fileDestDir, playerAddInfo.Photo)))
+                        {
+                            // If file found, delete it    
+                            System.IO.File.Delete(Path.Combine(fileDestDir, playerAddInfo.Photo));
+                        }
+                    }
+                    catch (Exception) { }
+
                     _context.PlayersAdditionalInfo.Remove(playerAddInfo);
                     _context.SaveChanges();
                 }
@@ -504,12 +564,25 @@ namespace JSStudyGameWebApp.Controllers
             try
             {
                 Player player = _context.Players.SingleOrDefault(p => p.Login == login && p.Password == password);
-                if (player == null)
+                if (player == null || player.Id == 1)
                     throw new Exception();
 
                 PlayerAdditionalInfo playerAddInfo = _context.PlayersAdditionalInfo.SingleOrDefault(p => p.IdPlayerAdditionalInfo == player.Id);
                 if (playerAddInfo != null)
                 {
+                    try
+                    {
+                        string fileDestDir = _env.ContentRootPath;
+                        fileDestDir = Path.Combine(fileDestDir, "Photos");
+
+                        if (playerAddInfo.Photo != "stepanPhoto.jpg" && System.IO.File.Exists(Path.Combine(fileDestDir, playerAddInfo.Photo)))
+                        {
+                            // If file found, delete it    
+                            System.IO.File.Delete(Path.Combine(fileDestDir, playerAddInfo.Photo));
+                        }
+                    }
+                    catch (Exception) { }
+
                     _context.PlayersAdditionalInfo.Remove(playerAddInfo);
                     _context.SaveChanges();
                 }
@@ -630,6 +703,6 @@ namespace JSStudyGameWebApp.Controllers
 
             return Ok(query.Count());
         }
-        
+
     }
 }
