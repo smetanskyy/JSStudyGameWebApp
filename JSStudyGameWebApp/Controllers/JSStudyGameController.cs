@@ -197,9 +197,11 @@ namespace JSStudyGameWebApp.Controllers
                             .Skip(numberOfObjectsPerPage * (_activePage - 1))
                             .Take(numberOfObjectsPerPage);
                     }
+                    else
+                    {
+                        return Ok(null);
+                    }
                 }
-                if (searchAddInfo.Count() == 0 && searchAddInfo.Count() == 0)
-                    return Ok(null);
             }
             else
             {
@@ -238,7 +240,6 @@ namespace JSStudyGameWebApp.Controllers
             if (admin.IsAdmin == false)
                 return Ok(0);
 
-            
             var query = _context.Players.AsQueryable();
             IQueryable<Player> searchInPlayes = null;
 
